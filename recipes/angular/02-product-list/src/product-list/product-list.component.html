@@ -1,0 +1,49 @@
+<div class="card">
+
+    <div class="card-header">
+        {{pageTitle}}
+    </div>
+    <div class="card-body">
+        <div class="row-filter">
+            <p> Filter by: </p>
+            <div class="input">
+                <input type="text" />
+            </div>
+            <div class="row">
+                <h3>Filterde by:  </h3>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="table" *ngIf = 'products.length'>
+                <thead>
+                    <tr>
+                        <th>
+                            <button class="btn-show-image" (click)="toggleImage()">
+                                {{showImage ? "Hide" : "Show "}} Images
+                            </button>
+                        </th>
+                        <th>Product</th>
+                        <th>Code</th>
+                        <th>Avaiable</th>
+                        <th>Price</th>
+                        <th>Stars</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let product of products"> 
+                        <td><img *ngIf="showImage"
+                                [src]='product.imageURl' 
+                                [title]='product.Name'
+                                [style.width.px]='imageWidth'
+                                [style.margin.px]='imageMargin'/></td>
+                        <td>{{product.Name}}</td>
+                        <td>{{product.Code}}</td>
+                        <td>{{product.releaseDate}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.startRating}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
