@@ -2,15 +2,16 @@
 
     <div class="card-header">
         {{pageTitle}}
+
     </div>
     <div class="card-body">
         <div class="row-filter">
             <p> Filter by: </p>
             <div class="input">
-                <input type="text" />
+                <input type="text" [(ngModel)]="listFilter"/>
             </div>
             <div class="row">
-                <h3>Filterde by:  </h3>
+                <h3>Filterde by: {{listFilter | uppercase}} </h3>
             </div>
         </div>
         <div class="table-container">
@@ -30,17 +31,18 @@
                     </tr>
                 </thead>
                 <tbody >
-                    <tr *ngFor="let product of products"> 
+                    <tr *ngFor="let product of filteredProducts"> 
                         <td><img *ngIf="showImage"
                                 [src]='product.imageURl' 
-                                [title]='product.Name'
+                                [title]='product.name'
                                 [style.width.px]='imageWidth'
                                 [style.margin.px]='imageMargin'/></td>
-                        <td>{{product.Name}}</td>
-                        <td>{{product.Code}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.code | uppercase | convertToSpaces:'-'}}</td>
                         <td>{{product.releaseDate}}</td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.startRating}}</td>
+                        <td>{{product.price | currency:'EUR':'symbol':'1.2-2' | uppercase}}</td>
+                        <td><pm-star [rating]="product.starRating"
+                                     (ratingClicked)="onRatingClicked($event)"></pm-star></td>
                     </tr>
                 </tbody>
             </table>

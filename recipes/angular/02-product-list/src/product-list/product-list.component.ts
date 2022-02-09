@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IProduct } from './product';
 
 @Component({
   selector: 'app-product-list',
@@ -13,55 +14,160 @@ export class ProductListComponent implements OnInit {
   imageWidth:number =80;
   imageMargin: number = 10;
   showImage:boolean = false;
-  products:any []= [
+  filteredProducts: IProduct[] = [];
+
+  private _listFilter:string='';
+  
+  get listFilter():string {
+    return this._listFilter;
+  }
+
+  set listFilter(value:string) {
+     this._listFilter = value;
+     this.filteredProducts = this.performFilter(value);
+  }
+
+   
+
+
+
+
+  products:IProduct []= [
     {
-      "Id":1,
-      "Name":"Garden Card",
-      "Code":"GDN-456",
+      "id":1,
+      "name":"Garden Cart",
+      "code":"GDN-456",
       "releaseDate":"April 12, 2020",
       "description":"20 liters capacity rolling cart",
       "price": 12.98,
-      "startRating": 4.3,
+      "starRating": 4,
       "imageURl":"assets/product.png"
     },
     {
-      "Id":2,
-      "Name":"Boat",
-      "Code":"KKA-456",
+      "id":2,
+      "name":"Boat",
+      "code":"KKA-456",
       "releaseDate":"June 12, 1998",
       "description":"simple boat",
       "price": 992.98,
-      "startRating": 3.3,
+      "starRating": 3,
       "imageURl":"assets/product.png"
     }
     ,
     {
-      "Id":3,
-      "Name":"Big pen",
-      "Code":"AAA-456",
+      "id":3,
+      "name":"pen",
+      "code":"AAA-456",
       "releaseDate":"May 22, 2020",
       "description":"simple pen",
       "price": 2.98,
-      "startRating": 1.3,
+      "starRating": 1,
       "imageURl":"assets/product.png"
     }
     ,
     {
-      "Id":1,
-      "Name":"Bag",
-      "Code":"WWA-406",
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
       "releaseDate":"January 12, 2021",
       "description":"simple bag",
       "price": 99.98,
-      "startRating": 5,
+      "starRating": 5.4,
       "imageURl":"assets/product.png"
     }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 5.2,
+      "imageURl":"assets/product.png"
+    }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 2.4,
+      "imageURl":"assets/product.png"
+    }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 4.8,
+      "imageURl":"assets/product.png"
+    }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 1.1,
+      "imageURl":"assets/product.png"
+    }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 4.2,
+      "imageURl":"assets/product.png"
+    }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 4.8,
+      "imageURl":"assets/product.png"
+    }
+    ,
+    {
+      "id":1,
+      "name":"Bag",
+      "code":"WWA-406",
+      "releaseDate":"January 12, 2021",
+      "description":"simple bag",
+      "price": 99.98,
+      "starRating": 5,
+      "imageURl":"assets/product.png"
+    }
+
   ];
   toggleImage():void {
     this.showImage = !this.showImage;
   }
 
-  ngOnInit(): void {
-  }
+  onRatingClicked(message: string): void {
 
+    this.pageTitle = 'Product List:'+message;
+  };
+
+  ngOnInit(): void {
+    this.listFilter='';
+  }
+ performFilter(filterBy: string): IProduct[] {
+   filterBy = filterBy.toLocaleLowerCase();
+   return this.products.filter((product:IProduct)=>product.name.toLocaleLowerCase().includes(filterBy));
+ }
 }
