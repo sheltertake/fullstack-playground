@@ -1,11 +1,14 @@
 export interface IProduct {
 
     id:number,
-    name:string,
-    code:string,
-    releaseDate:string,
-    description:string,
+    title:string,
     price:number,
-    starRating: number,
-    imageURl:string,
+    category:string,
+    description:string,
+    image:string,
+    rating: {
+        rate:number,
+        count:number,
+    };
+
 }

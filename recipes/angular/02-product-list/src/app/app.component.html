@@ -1,1 +1,11 @@
-<app-product-list></app-product-list>
+
+<nav class="navbar">
+    <a class="navbar-brand" routerLink="/welcome">{{pageTitle}}</a>
+    <ul>
+        <li><a class="nav-item" routerLink="/welcome">Home</a></li>
+        <li><a class="nav-item" routerLink="/products">Product List</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
