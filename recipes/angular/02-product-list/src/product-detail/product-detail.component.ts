@@ -19,8 +19,8 @@ export class ProductDetailComponent implements OnInit {
     this.pageTitle+=`:${id}`;
     this.product = {
     "id":id,
-    "title":"ciao",
-    "price":0,
+    "title":"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+    "price":109,
     "category":"",
     "description":"",
     "image":"",
