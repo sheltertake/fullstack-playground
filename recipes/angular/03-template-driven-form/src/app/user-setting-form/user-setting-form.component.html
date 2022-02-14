@@ -22,16 +22,47 @@
              <p>invalid: {{nameField.invalid}}</p>
            </div>
 
+           <button type="button" class="btn btn-success" name="singleModel"
+           [(ngModel)]="singleModel" btnCheckbox
+           btnCheckboxTrue="On" btnCheckboxFalse="Off"
+           > {{singleModel}}           </button>
+
            <div class="form-group">
-            <label for="name">lastName</label> 
-            <input type="text" id ="name" class="form-control"
-             name="name" [(ngModel)]="userSettings.name" 
-             required #nameField="ngModel"
-             (blur)="onBlur(nameField)"
-             [class.field-error]="form.submitted && nameField.invalid"/>
-        <div [hidden]="!form.submitted || nameField.valid" class="alert alert-danger">
+            <label for="lastName">Last Name</label> 
+            <input type="text" id ="lastName" class="form-control"
+             name="lastName" [(ngModel)]="userSettings.lastName" 
+             required #lastNameField="ngModel"
+             (blur)="onBlur(lastNameField)"
+             [class.field-error]="form.submitted && lastNameField.invalid"/>
+        <div [hidden]="!form.submitted || lastNameField.valid" class="alert alert-danger">
             Enter a last name
         </div> 
+
+
+
+<div class="form-group">
+  <label for="startDate">Start Date</label>
+  <input type="text"
+           placeholder="Start Date"
+           class="form-control"
+           [(ngModel)]="startDate" name="startDate" id="startDate"
+           bsDaterangepicker>
+           <p>{{startDate}}</p>
+</div>
+
+
+<div class="form-group">
+  <label for="startTime">Start time</label>
+<timepicker [(ngModel)]="startTime" name="startTime" id="startTime"> </timepicker>
+<p>Time is: {{startTime}}</p>
+</div>
+
+<div class="form-group">
+User Rating
+  <rating [(ngModel)]="userRating" [max]= "maxRating" [readonly]="isReadonly" name="userRating" id="userRating" [titles]="['one','two','three']"></rating>
+     
+</div>
+User rating. {{userRating}};
             <div class="form-check form-group">
                 <input class="form-check-input" type="checkbox" id="emailOffers" name="emailOffers"  [(ngModel)]="userSettings.emailOffers">
                 <label class="form-check-label" for="emailOffers">
@@ -41,18 +72,13 @@
  
         <h6>User Interface Style</h6>
         <div class="form-group">
-            <div class="form-check">
-            <input class="form-check-input" type="radio" name="interfaceStyle" id="medium" value="medium" [(ngModel)]="userSettings.interfaceStyle">
-            <label class="form-check-label" for="medium"> Medium</label>
-         </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="interfaceStyle" id="light" value="light" [(ngModel)]="userSettings.interfaceStyle">
-            <label class="form-check-label" for="light">Light</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="interfaceStyle" id="dark" value="dark" [(ngModel)]="userSettings.interfaceStyle">
-            <label class="form-check-label" for="dark">Dark</label>
-          </div>
+            <div class="form-inline d-flex align-items-center">
+              <div class="btn-group" btnRadioGroup [(ngModel)]="userSettings.interfaceStyle"  name="interfaceStyle">
+                <label class="btn btn-success mb-0" btnRadio="Light">Light</label>
+                <label class="btn btn-success mb-0" btnRadio="Medium">Medium</label>               
+                <label class="btn btn-success mb-0" btnRadio="Dark">Dark</label>
+              </div>             
+            </div>
         </div>
           <div class="form-group">
             <label for="subscriptionType">
@@ -78,7 +104,7 @@
             {{postErrorMessage}}
         </div> 
       
-        <button class="btn btn-dark">Send</button>
+        <button class="btn btn-success">Send</button>
  
 </div>    
 

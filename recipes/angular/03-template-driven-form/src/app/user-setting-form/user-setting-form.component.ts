@@ -1,3 +1,4 @@
+import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -20,16 +21,23 @@ export class UserSettingFormComponent implements OnInit {
     notes: 'Write here...',
   
   }
-
+ 
   userSettings: IUserSettings = {...this.originalUserSettings};
   postError: boolean = false;
   postErrorMessage: string = "";
   subscriptionTypes:Observable<string[]> | undefined;
-
+  singleModel="On";
+  startDate?: Date;
+  startTime?: Date;
+  userRating = 0;
+  maxRating= 10;
+  isReadonly=false;
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.subscriptionTypes = this.dataService.getSubscriptionTypes();
+    this.startDate = new Date();
+    this.startTime = new Date();
   }
 
   onHttpError(errorResponse:any){
