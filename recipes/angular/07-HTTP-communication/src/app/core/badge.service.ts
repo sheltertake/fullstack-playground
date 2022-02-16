@@ -7,7 +7,7 @@ export class BadgeService {
 
   constructor() { }
 
-  getReaderBadge(minutesRead: number): string {
+  getReaderBadge(minutesRead: number):string {
 
     if (minutesRead > 5000) {
       return 'Book Worm';
