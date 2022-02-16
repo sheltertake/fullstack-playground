@@ -371,10 +371,11 @@
     </form>
 
     <div>
-      <br />Dirty: {{ customerForm.dirty }} <br />Touched:
-      {{ customerForm.touched }} <br />Valid: {{ customerForm.valid }}
-      <br />Value: {{ customerForm.value | json }} <br />Street:
-      {{ addresses.get("0.street1")?.value }}
+      <br />Dirty: {{ customerForm.dirty }} 
+      <br />Touched: {{ customerForm.touched }}
+      <br />Valid: {{ customerForm.valid }}
+      <pre>Value: {{ customerForm.value | json }} </pre>
+      <br />Street: {{ addresses.get("0.street1")?.value }}
     </div>
   </div>
 </div>
