@@ -1,14 +1,14 @@
-import { BooktrackerPage } from './app.po';
+// import { BooktrackerPage } from './app.po';
 
-describe('booktracker App', () => {
-  let page: BooktrackerPage;
+// describe('booktracker App', () => {
+//   let page: BooktrackerPage;
 
-  beforeEach(() => {
-    page = new BooktrackerPage();
-  });
+//   beforeEach(() => {
+//     page = new BooktrackerPage();
+//   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!!');
-  });
-});
+//   it('should display welcome message', () => {
+//     page.navigateTo();
+//     expect(page.getParagraphText()).toEqual('Welcome to app!!');
+//   });
+// });
