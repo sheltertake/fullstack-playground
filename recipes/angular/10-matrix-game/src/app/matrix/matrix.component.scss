@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10%;
+
+  .row {
+    display: flex;
+    .card {
+      height: 50px;
+      width: 50px;
+      border: 1px solid black;
+      background-color: green;
+      margin: 4px;
+    }
+    .false-card {
+      height: 50px;
+      width: 50px;
+      border: 1px solid black;
+      margin: 4px;
+    }
+    .null-card {
+        height: 50px;
+        width: 50px;
+        border: 1px solid black;
+        background-color: red;
+        margin: 4px;
+      }
+  }
+
+  .btn-container {
+    height: 200px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-top:50px;
+
+    .right,
+    .left,
+    .up,
+    .down {
+      height: 60px;
+      width: 60px;
+    }
+    .left{
+        position: absolute;
+        left: 0;
+        top:35%;
+    }
+    .right{
+        position: absolute;
+        right: 0;
+        top:35%;
+    }
+    .down{
+        position: absolute;
+        bottom:0;
+    }
+  }
+}

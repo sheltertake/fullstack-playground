@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="row" *ngFor="let row of matrix">
+        <div class="col" *ngFor="let col of row">
+         <div class="card" [className]="col===true ? 'card' : col===false? 'false-card': 'null-card'"  >{{col | color}}</div>
+        </div>
+      </div>
+     
+<div class="btn-container">
+    <button class="up" (click)="goUp()" [ngStyle]="{'background-color': buttonBack}">Up</button>
+<button class="right" (click)="goRight()" [ngStyle]="{'background-color': buttonBack}">Right</button>
+<button class="left" (click)="goLeft()" [ngStyle]="{'background-color': buttonBack}">Left</button>
+<button class="down" (click)="goDown()" [ngStyle]="{'background-color': buttonBack}">Down</button>
+</div>
+</div>
