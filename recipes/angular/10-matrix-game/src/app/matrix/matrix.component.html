@@ -1,14 +1,84 @@
 <div class="container">
-    <div class="row" *ngFor="let row of matrix">
-        <div class="col" *ngFor="let col of row">
-         <div class="card" [className]="col===true ? 'card' : col===false? 'false-card': 'null-card'"  >{{col | color}}</div>
-        </div>
+  <div class="row" *ngFor="let row of matrix">
+    <div class="col" *ngFor="let col of row">
+      <div
+
+        [ngClass]="col === true ? 'card' : col=== false ? 'false-card' : 'null-card'" >
+        {{ col | color }}
       </div>
-     
-<div class="btn-container">
-    <button class="up" (click)="goUp()" [ngStyle]="{'background-color': buttonBack}">Up</button>
-<button class="right" (click)="goRight()" [ngStyle]="{'background-color': buttonBack}">Right</button>
-<button class="left" (click)="goLeft()" [ngStyle]="{'background-color': buttonBack}">Left</button>
-<button class="down" (click)="goDown()" [ngStyle]="{'background-color': buttonBack}">Down</button>
+    </div>
+  </div>
+
+  <div class="btn-container">
+    <button
+      class="up"
+      (click)="goUp()"
+      [ngStyle]="{ 'background-color': buttonBack }"
+      (keydown)="checkKey($event)"
+
+    >
+      Up
+    </button>
+    <button
+      class="right"
+      (click)="goRight()"
+      [ngStyle]="{ 'background-color': buttonBack }"
+      (keydown)="checkKey($event)"
+
+    >
+      Right
+    </button>
+    <button
+      class="left"
+      (click)="goLeft()"
+      [ngStyle]="{ 'background-color': buttonBack }"
+      (keydown)="checkKey($event)"
+
+    >
+      Left
+    </button>
+    <button
+      class="down"
+      (click)="goDown()"
+      [ngStyle]="{ 'background-color': buttonBack }"
+      (keydown)="checkKey($event)"
+
+    >
+      Down
+    </button>
+  </div>
+
+
+  <form #form="ngForm" (ngSubmit)="startGame()">
+    <div class="form-group">
+      <label for="size">Size</label>
+      <input
+        type="number"
+        id="size"
+        class="form-control"
+        name="size"
+        [(ngModel)]="size"
+        required
+        #nameField="ngModel"
+      />
+
+      <button
+        type="button"
+        class="btn btn-success"
+        name="singleModel"
+        (click)="startGame()"
+        (keydown)="checkKey($event)"
+        btnCheckbox
+        btnCheckboxTrue="On"
+        btnCheckboxFalse="Off"
+      > {{ start ? "Restart Game" : "Start Game" }}
+      </button>
+
+
+
 </div>
+
+  </form>
+  <button
+(click)=findPacman()>test</button>
 </div>
