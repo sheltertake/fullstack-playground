@@ -6,8 +6,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { NgClass } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 type Cell = boolean | null;
 
@@ -35,6 +35,7 @@ type Cell = boolean | null;
 export class MatrixComponent implements OnInit {
   @Input() x = 0;
   @Input() y = 0;
+
   buttonBack: string = 'white';
   state: boolean = true;
   randX: number = 0;
@@ -59,7 +60,7 @@ export class MatrixComponent implements OnInit {
   //   [false, false, false, false, false, false, false, false, false, false],
   // ];
 
-  constructor() {
+  constructor(private elref: ElementRef) {
     this.matrix = Array(this.size)
       .fill(false)
       .map(() => Array(this.size).fill(false));
@@ -74,11 +75,13 @@ export class MatrixComponent implements OnInit {
   }
 
   startGame() {
+    this.x = 0;
+    this.y = 0;
     this.start = true;
     console.log(this.size);
 
     this.matrix = this.buildMatrix(this.size);
-    this.matrix[0][0] = true;
+    this.matrix[this.x][this.y] = true;
     for (let i = 0; i < this.size; i++) {
       this.randX = this.randomObstacle();
       this.randY = this.randomObstacle();
@@ -91,7 +94,7 @@ export class MatrixComponent implements OnInit {
     }
   }
 
-  public getClass(a: number, b: number): string {
+  getClass(a: number, b: number): string {
     if (this.matrix[a][b] === true) {
       this.res = 'card';
     } else if (this.matrix[a][b] === false) {
@@ -110,14 +113,14 @@ export class MatrixComponent implements OnInit {
   }
 
   goRight(): void {
-
-    if (this.getClass(this.y, this.x) === 'card'|| this.getClass(this.y, this.x) === 'card-down' || this.getClass(this.y, this.x) === 'card-up'|| this.getClass(this.y, this.x) === 'card-left') {
-      this.pacman = document.querySelector(this.getClass(this.y, this.x))
-
-      // this.pacman.className = 'card-right';
-        console.log(this.pacman);
-
-    }
+    // let elem = Array.from(
+    //   document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
+    // );
+    // for (let i = 0; i < elem.length; i++) {
+    //   const element = elem[i];
+    //   element.style.backgroundImage = "url('p-right.png')";
+    // }
+    this.upImg('right');
     if (this.x < this.matrix.length - 1) {
       if (this.matrix[this.y][this.x + 1] === null) {
         this.findObstacle();
@@ -137,24 +140,26 @@ export class MatrixComponent implements OnInit {
     }
   }
   goLeft(): void {
+    // let elem = Array.from(
+    //   document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
+    // );
+    // for (let i = 0; i < elem.length; i++) {
+    //   const element = elem[i];
 
-    if (this.getClass(this.y, this.x) === '.card'|| this.getClass(this.y, this.x) === '.card-right' || this.getClass(this.y, this.x) === '.card-up'|| this.getClass(this.y, this.x) === '.card-down') {
-      this.pacman = document.querySelector(this.getClass(this.y, this.x))
-      if (this.pacman) {
-        this.pacman.className = '.card-left';
-      }
-    }
+    //   element.style.backgroundImage = "url('p-left.png')";
+    // }
+    this.upImg('left');
     if (this.x > 0) {
       if (this.matrix[this.y][this.x - 1] == null) {
         this.findObstacle();
         this.matrix[this.y][this.x] = false;
         this.x--;
         this.matrix[this.y][this.x] = true;
-        return;
+      } else {
+        this.matrix[this.y][this.x] = false;
+        this.x--;
+        this.matrix[this.y][this.x] = true;
       }
-      this.matrix[this.y][this.x] = false;
-      this.x--;
-      this.matrix[this.y][this.x] = true;
     } else {
       this.matrix[this.y][this.x] = false;
       this.x = this.matrix.length - 1;
@@ -162,25 +167,53 @@ export class MatrixComponent implements OnInit {
       this.outOfTemplate();
     }
   }
-  goUp(): void {
 
-    if (this.getClass(this.y, this.x) === '.card'|| this.getClass(this.y, this.x) === '.card-right' || this.getClass(this.y, this.x) === '.card-left'|| this.getClass(this.y, this.x) === '.card-down') {
-      this.pacman = document.querySelector(this.getClass(this.y, this.x))
-      if (this.pacman) {
-        this.pacman.className = '.card-up';
+  upImg(caller: string) {
+    let elem = Array.from(
+      document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
+    );
+    console.log(elem);
+    for (let i = 0; i < elem.length; i++) {
+      const element = elem[i];
+      if (caller === 'right') {
+        element.style.backgroundColor='red';
+      } else if (caller === 'left') {
+        element.style.backgroundColor='green';
       }
     }
+  }
+  upImg1(caller: string) {
+    let elem = Array.from(
+      document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
+    );
+    console.log(elem);
+    for (let i = 0; i < elem.length; i++) {
+      const element = elem[i];
+      if (caller === 'up') {
+        // element.style.backgroundImage = "p-up.png";
+        // element.style.backgroundColor='grey';
+        element.className="left-card"
+      } else if (caller === 'down') {
+        element.style.backgroundColor='blue';
+      }
+    }
+  }
+  goUp(): void {
+    setTimeout(() => {
+      this.upImg1('up');
+    }, 100);
+
     if (this.y > 0) {
-      if (this.matrix[this.y - 1][this.x] == null) {
+      if (this.matrix[this.y - 1][this.x] === null) {
         this.findObstacle();
         this.matrix[this.y][this.x] = false;
         this.y--;
         this.matrix[this.y][this.x] = true;
-        return;
+      } else {
+        this.matrix[this.y][this.x] = false;
+        this.y--;
+        this.matrix[this.y][this.x] = true;
       }
-      this.matrix[this.y][this.x] = false;
-      this.y--;
-      this.matrix[this.y][this.x] = true;
     } else {
       this.matrix[this.y][this.x] = false;
       this.y = this.matrix.length - 1;
@@ -188,24 +221,21 @@ export class MatrixComponent implements OnInit {
       this.outOfTemplate();
     }
   }
-  goDown() {
-    if (this.getClass(this.y, this.x) === '.card'|| this.getClass(this.y, this.x) === '.card-right' || this.getClass(this.y, this.x) === '.card-up'|| this.getClass(this.y, this.x) === '.card-left') {
-      this.pacman = document.querySelector(this.getClass(this.y, this.x))
-      if (this.pacman) {
-        this.pacman.className = '.card-down';
-      }
-    }
+  goDown(): void {
+    setTimeout(() => {
+      this.upImg1('down');
+    }, 100);
     if (this.y < this.matrix.length - 1) {
-      if (this.matrix[this.y][this.x] == null) {
+      if (this.matrix[this.y + 1][this.x] === null) {
         this.findObstacle();
         this.matrix[this.y][this.x] = false;
         this.y++;
         this.matrix[this.y][this.x] = true;
-        return;
+      } else {
+        this.matrix[this.y][this.x] = false;
+        this.y++;
+        this.matrix[this.y][this.x] = true;
       }
-      this.matrix[this.y][this.x] = false;
-      this.y++;
-      this.matrix[this.y][this.x] = true;
     } else {
       this.matrix[this.y][this.x] = false;
       this.y = 0;
@@ -241,12 +271,5 @@ export class MatrixComponent implements OnInit {
 
   findObstacle() {
     console.log('Obstacle found');
-  }
-
-  findPacman() {
-    let p =(document.getElementsByClassName('.false-card'));
-   console.log(p);
-
-
   }
 }

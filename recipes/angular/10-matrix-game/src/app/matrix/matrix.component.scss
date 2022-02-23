@@ -16,28 +16,15 @@
       margin: 4px;
 
     }
-    .card-left{
-      @extend .card;
+    .left-card {
+      height: 50px;
+      width: 50px;
       background-image: url("../shared/img/p-left.png");
+      background-size: 85%;
+      background-repeat: no-repeat;
 
-    }
-    .card-right{
-      @extend .card;
-      background-image: url("../shared/img/p-right.png");
+      margin: 4px;
 
-
-    }
-
-    .card-up{
-      @extend .card;
-      background-image: url("../shared/img/p-up.png");
-
-    }
-
-    .card-down{
-      @extend .card;
-      // background-image: url("../shared/img/p-down.png");
-      background-color: #666
     }
 
 
