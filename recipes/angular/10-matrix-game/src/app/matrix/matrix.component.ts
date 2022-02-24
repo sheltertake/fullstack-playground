@@ -1,13 +1,5 @@
-import {
-  animate,
-  keyframes,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 type Cell = boolean | null;
 
@@ -15,32 +7,17 @@ type Cell = boolean | null;
   selector: 'app-matrix',
   templateUrl: './matrix.component.html',
   styleUrls: ['./matrix.component.scss'],
-  animations: [
-    trigger('myTrigger', [
-      transition('void => *', [
-        animate(200, keyframes([style({ transform: 'width:50px' })])),
-      ]),
-
-      // trigger('up', [
-      //   transition('void => *',[ animate(500 ,keyframes([
-      //     style({transform: 'rotate(45deg)'}),
-      //     // style({transform: 'rotate(-45deg)'}),
-      //   ]))
-
-      // ]),
-      // ]),
-    ]),
-  ],
 })
 export class MatrixComponent implements OnInit {
+  private ctx!: AudioContext;
+
   @Input() x = 0;
   @Input() y = 0;
-
-  buttonBack: string = 'white';
   state: boolean = true;
   randX: number = 0;
   randY: number = 0;
   size: number = 2;
+  enemies: number = 1;
   start: boolean = false;
   rotation: string = 'color:blu';
   matrix: Cell[][];
@@ -60,16 +37,39 @@ export class MatrixComponent implements OnInit {
   //   [false, false, false, false, false, false, false, false, false, false],
   // ];
 
-  constructor(private elref: ElementRef) {
+  constructor(private route: ActivatedRoute) {
+    let routerRes = this.route.snapshot.paramMap.get('size');
+
+    if (routerRes) {
+      let s = parseInt(routerRes);
+      console.log(s);
+      this.size = s;
+      this.enemies = s;
+    }
+
     this.matrix = Array(this.size)
       .fill(false)
       .map(() => Array(this.size).fill(false));
   }
 
-  buildMatrix(size: number): Cell[][] {
-    let matrix = Array(size)
+  ngOnInit(): void {
+    AudioContext =
+      (window as any).AudioContext || (window as any).webkitAudioContext;
+    this.ctx = new AudioContext();
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+      let audio = document.querySelector('audio');
+      if (audio) {
+        audio.volume = 0.2;
+        audio.play().then((c) => {});
+      }
+    });
+  }
+
+  buildMatrix(): Cell[][] {
+    let matrix = Array(this.size)
       .fill(false)
-      .map(() => Array(size).fill(false));
+      .map(() => Array(this.size).fill(false));
 
     return matrix;
   }
@@ -78,49 +78,168 @@ export class MatrixComponent implements OnInit {
     this.x = 0;
     this.y = 0;
     this.start = true;
-    console.log(this.size);
 
-    this.matrix = this.buildMatrix(this.size);
+    this.enemies = this.size;
+    this.matrix = this.buildMatrix();
     this.matrix[this.x][this.y] = true;
-    for (let i = 0; i < this.size; i++) {
+    for (let i = 0; i < 3; i++) {
       this.randX = this.randomObstacle();
       this.randY = this.randomObstacle();
-      console.log('x: ' + this.randX + 'y. ' + this.randY);
-      while (this.randX == 0 && this.randY == 0) {
-        this.randX++;
-        this.randY++;
+
+      while (
+        (this.randX == 0 && this.randY == 0) ||
+        this.matrix[this.randX][this.randY] != false
+      ) {
+        this.randX = this.randomObstacle();
+        this.randY = this.randomObstacle();
       }
-      this.matrix[this.randX][this.randY] = null;
+      this.setEnemy(this.randX, this.randY);
+      console.log('X: ' + this.randX + '  Y:  ' + this.randY);
     }
   }
 
-  getClass(a: number, b: number): string {
-    if (this.matrix[a][b] === true) {
-      this.res = 'card';
-    } else if (this.matrix[a][b] === false) {
-      this.res = 'false-card';
-    } else if (this.matrix[a][b] == null) {
-      this.res = 'null-card';
-    }
-    console.log(this.res);
-    return this.res;
+  setEnemy(x: number, y: number) {
+    this.randX = x;
+    this.randY = y;
+    this.matrix[x][y] = null;
   }
+  moveEnemy(x: number, y: number) {
+    // var elems = document.querySelectorAll<HTMLElement>('.null-card');
 
-  ngOnInit(): void {}
+    // var index = 0,
+    //   length = elems.length;
+    // for (; index < length; index++) {
+    //   const element = elems[index];
+    //   console.log(element);
 
+    // }
+    let i = 0;
+    let randomMov = this.randomMove();
+    while (i < this.matrix.length - 1) {
+      let j = 0;
+      while (j < this.matrix.length - 1) {
+        switch (randomMov) {
+          case 0:
+            console.log('0');
+            if (this.matrix[i][j] === null && this.matrix[i + 1][j] != true) {
+              if (i + 1 < this.matrix.length && this.matrix[0][j] === false) {
+                this.matrix[i][j] = false;
+                this.matrix[0][j] = null;
+              }
+
+              this.matrix[i][j] = false;
+              this.matrix[i + 1][j] = null;
+              return;
+            } else {
+            }
+
+            break;
+          case 1:
+            if (
+              this.matrix[i][j] === null &&
+              this.matrix[i + 1][j + 1] != true
+            ) {
+              if (
+                i + 1 < this.matrix.length &&
+                j + 1 < this.matrix.length - 1 &&
+                this.matrix[0][this.matrix.length - 1] === false
+              ) {
+                this.matrix[i][j] = false;
+                this.matrix[0][this.matrix.length - 1] = null;
+              }
+              this.matrix[i][j] = false;
+              this.matrix[i + 1][j + 1] = null;
+              return;
+            } else {
+            }
+            console.log('1');
+            break;
+          case 2:
+            if (this.matrix[i][j] === null && this.matrix[i][j + 1] != true) {
+              if (
+                j + 1 < this.matrix.length &&
+                this.matrix[i][this.matrix.length] === false
+              ) {
+                this.matrix[i][j] = false;
+                this.matrix[i][this.matrix.length] = null;
+              }
+              this.matrix[i][j] = false;
+              this.matrix[i][j + 1] = null;
+              return;
+            } else {
+            }
+            console.log('2');
+
+            break;
+          case 3:
+            console.log('3');
+            if (this.matrix[i][j] === null && this.matrix[i + 2][j] != true) {
+              if (
+                i + 2 > this.matrix.length &&
+                this.matrix[this.matrix.length][j] === false
+              ) {
+                this.matrix[i][j] = false;
+                this.matrix[this.matrix.length][j] = null;
+              }
+              this.matrix[i][j] = false;
+              this.matrix[i + 2][j] = null;
+              return;
+            } else {
+            }
+            break;
+        }
+
+        j++;
+      }
+      i++;
+    }
+    // if (x+2<this.matrix.length-1 && this.matrix[x + 2][y] === null) {
+    //   this.matrix[x + 2][y] = false;
+
+    //   if (x+3<this.matrix.length-1 && this.matrix[x + 3][y] != null) {
+    //     this.matrix[x + 3][y] = null;
+    //     console.log('ok');
+    //   } else {
+    //     console.log('d');
+    //   }
+    // } else {
+    //   console.log("fff");
+
+    // }
+  }
+  randomMove(): number {
+    return Math.floor(Math.random() * 4);
+  }
   randomObstacle() {
     return Math.floor(Math.random() * this.size);
   }
+  upImg(caller: string) {
+    var elems = document.querySelectorAll<HTMLElement>(
+      '.card, .left-card, .right-card, .down-card, .up-card'
+    );
 
+    var index = 0,
+      length = elems.length;
+    for (; index < length; index++) {
+      const element = elems[index];
+      if (caller === 'right') {
+        element.className = 'right-card';
+        return;
+      } else if (caller === 'left') {
+        element.className = 'left-card';
+        return;
+      } else if (caller === 'up') {
+        element.className = 'up-card';
+        return;
+      } else if (caller === 'down') {
+        element.className = 'down-card';
+        return;
+      }
+    }
+  }
   goRight(): void {
-    // let elem = Array.from(
-    //   document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
-    // );
-    // for (let i = 0; i < elem.length; i++) {
-    //   const element = elem[i];
-    //   element.style.backgroundImage = "url('p-right.png')";
-    // }
     this.upImg('right');
+    this.moveEnemy(this.x, this.y);
     if (this.x < this.matrix.length - 1) {
       if (this.matrix[this.y][this.x + 1] === null) {
         this.findObstacle();
@@ -136,19 +255,13 @@ export class MatrixComponent implements OnInit {
       this.matrix[this.y][this.x] = false;
       this.x = 0;
       this.matrix[this.y][this.x] = true;
+
       this.outOfTemplate();
     }
   }
   goLeft(): void {
-    // let elem = Array.from(
-    //   document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
-    // );
-    // for (let i = 0; i < elem.length; i++) {
-    //   const element = elem[i];
-
-    //   element.style.backgroundImage = "url('p-left.png')";
-    // }
     this.upImg('left');
+    this.moveEnemy(this.x, this.y);
     if (this.x > 0) {
       if (this.matrix[this.y][this.x - 1] == null) {
         this.findObstacle();
@@ -168,41 +281,11 @@ export class MatrixComponent implements OnInit {
     }
   }
 
-  upImg(caller: string) {
-    let elem = Array.from(
-      document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
-    );
-    console.log(elem);
-    for (let i = 0; i < elem.length; i++) {
-      const element = elem[i];
-      if (caller === 'right') {
-        element.style.backgroundColor='red';
-      } else if (caller === 'left') {
-        element.style.backgroundColor='green';
-      }
-    }
-  }
-  upImg1(caller: string) {
-    let elem = Array.from(
-      document.getElementsByClassName('card') as HTMLCollectionOf<HTMLElement>
-    );
-    console.log(elem);
-    for (let i = 0; i < elem.length; i++) {
-      const element = elem[i];
-      if (caller === 'up') {
-        // element.style.backgroundImage = "p-up.png";
-        // element.style.backgroundColor='grey';
-        element.className="left-card"
-      } else if (caller === 'down') {
-        element.style.backgroundColor='blue';
-      }
-    }
-  }
   goUp(): void {
     setTimeout(() => {
-      this.upImg1('up');
-    }, 100);
-
+      this.upImg('up');
+    }, 50);
+    this.moveEnemy(this.x, this.y);
     if (this.y > 0) {
       if (this.matrix[this.y - 1][this.x] === null) {
         this.findObstacle();
@@ -223,8 +306,9 @@ export class MatrixComponent implements OnInit {
   }
   goDown(): void {
     setTimeout(() => {
-      this.upImg1('down');
-    }, 100);
+      this.upImg('down');
+    }, 50);
+    this.moveEnemy(this.x, this.y);
     if (this.y < this.matrix.length - 1) {
       if (this.matrix[this.y + 1][this.x] === null) {
         this.findObstacle();
@@ -263,13 +347,25 @@ export class MatrixComponent implements OnInit {
   }
 
   outOfTemplate() {
-    this.buttonBack = 'red';
-    setTimeout(() => {
-      this.buttonBack = 'white';
-    }, 1000);
+    setTimeout(() => {}, 1000);
   }
 
   findObstacle() {
     console.log('Obstacle found');
+    this.play();
+    if (this.enemies == 1) {
+      alert('Winner!');
+    }
+    this.enemies--;
+  }
+
+  play() {
+    let osc = this.ctx.createOscillator();
+    osc.onended = () => osc.disconnect();
+    osc.connect(this.ctx.destination);
+    osc.frequency.value = 200;
+    osc.detune.value = 2000;
+    osc.start();
+    osc.stop(this.ctx.currentTime + 0.2);
   }
 }

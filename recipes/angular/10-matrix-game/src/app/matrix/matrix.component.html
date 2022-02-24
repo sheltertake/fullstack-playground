@@ -1,74 +1,43 @@
 <div class="container">
-  <div class="row" *ngFor="let row of matrix">
-    <div class="col" *ngFor="let col of row">
-      <div
-        id="cell"
-        [ngClass]="
-          col === true ? 'card' : col === false ? 'false-card' : 'null-card'
-        "
-      >
-        {{ col | color }}
+  <div class="matrix-container">
+    <div class="row" *ngFor="let row of matrix">
+      <div class="col" *ngFor="let col of row">
+        <div
+          id="cell"
+          [ngClass]="
+            col === true ? 'card' : col === false ? 'false-card' : 'null-card'
+          "
+        >
+          {{ col | color }}
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="btn-container">
+  <div class="controls">
     <button
-      class="up"
-      (click)="goUp()"
-      [ngStyle]="{ 'background-color': buttonBack }"
+      class="start-btn"
+      (click)="startGame()"
       (keydown)="checkKey($event)"
     >
-      Up
+      {{ start ? "Restart Game" : "Start Game" }}
     </button>
-    <button
-      class="right"
-      (click)="goRight()"
-      [ngStyle]="{ 'background-color': buttonBack }"
-      (keydown)="checkKey($event)"
-    >
-      Right
-    </button>
-    <button
-      class="left"
-      (click)="goLeft()"
-      [ngStyle]="{ 'background-color': buttonBack }"
-      (keydown)="checkKey($event)"
-    >
-      Left
-    </button>
-    <button
-      class="down"
-      (click)="goDown()"
-      [ngStyle]="{ 'background-color': buttonBack }"
-      (keydown)="checkKey($event)"
-    >
-      Down
-    </button>
-  </div>
-
-  <form #form="ngForm" (ngSubmit)="startGame()">
-    <div class="form-group">
-      <label for="size">Size</label>
-      <input
-        type="number"
-        id="size"
-        class="form-control"
-        name="size"
-        [(ngModel)]="size"
-        required
-        #nameField="ngModel"
-      />
-
-      <button
-        type="button"
-        class="btn btn-success"
-        name="singleModel"
-        (click)="startGame()"
-        (keydown)="checkKey($event)"
-      >
-        {{ start ? "Restart Game" : "Start Game" }}
+    <div class="btn-container">
+      <button class="up" (click)="goUp()" (keydown)="checkKey($event)">
+        Up
+      </button>
+      <button class="right" (click)="goRight()" (keydown)="checkKey($event)">
+        Right
+      </button>
+      <button class="left" (click)="goLeft()" (keydown)="checkKey($event)">
+        Left
+      </button>
+      <button class="down" (click)="goDown()" (keydown)="checkKey($event)">
+        Down
       </button>
     </div>
-  </form>
+    <h2>Enemies alive: {{ enemies }}</h2>
+    <button routerLink="/menu" class="back-btn">BACK</button>
+  </div>
+  <audio src="https://www.bensound.com/bensound-music/bensound-moose.mp3"></audio>
+  <!-- <audio src="../shared/sound/pacman_ringtone.mp3"></audio> -->
 </div>
