@@ -1,0 +1,126 @@
+.container {
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5%;
+  background-color: #212a72;
+
+  .matrix-container {
+    background-color: #142453;
+    margin-left: 100px;
+  }
+  .controls{
+    margin-left: 100px;
+  }
+  .row:first-of-type {
+    border-top: 3px solid #f2f200;
+  }
+  .row:last-of-type {
+    border-bottom: 3px solid #f2f200;
+  }
+  .row {
+    display: flex;
+    border-left: 3px solid #f2f200;
+    border-right: 3px solid #f2f200;
+
+    .card {
+      height: 50px;
+      width: 50px;
+      background-image: url("../shared/img/p-right.png");
+      background-size: 85%;
+      background-repeat: no-repeat;
+      margin: 4px;
+    }
+    .left-card {
+      @extend .card;
+      background-image: url("../shared/img/p-left.png");
+    }
+    .right-card {
+      @extend .card;
+      background-image: url("../shared/img/p-right.png");
+    }
+    .up-card {
+      @extend .card;
+      background-image: url("../shared/img/p-up.png");
+    }
+    .down-card {
+      @extend .card;
+      background-image: url("../shared/img/p-down.png");
+    }
+
+    .false-card {
+      height: 50px;
+      width: 50px;
+      margin: 4px;
+    }
+    .null-card {
+      height: 50px;
+      width: 50px;
+      background-image: url("../shared/img/pacnam-enemy.png");
+      background-size: 100%;
+      background-repeat: no-repeat;
+      margin: 4px;
+    }
+  }
+  button:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+  .btn-container {
+    height: 200px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-top: 50px;
+
+    .right,
+    .left,
+    .up,
+    .down {
+      height: 60px;
+      width: 60px;
+      color: #f2f200;
+      background-color: #142453;
+      border-radius: 10px;
+      font-size:10px;
+    }
+    .left {
+      position: absolute;
+      left: 0;
+      top: 35%;
+    }
+    .right {
+      position: absolute;
+      right: 0;
+      top: 35%;
+    }
+    .down {
+      position: absolute;
+      bottom: 35%;
+    }
+  }
+  .start-btn {
+    height: 80px;
+    width: 200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #f2f200;
+    background-color: #142453;
+    border-radius: 10px;
+  }
+  .back-btn{
+    width: 200px;
+    height: 50px;
+    color: #f2f200;
+    background-color: #142453;
+    border-radius: 10px;
+  }
+}

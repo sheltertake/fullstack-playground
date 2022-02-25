@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { throwError, Observable } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 
 import { ProductCategory } from './product-category';
 
@@ -14,6 +15,7 @@ export class ProductCategoryService {
   productCategories$ = this.http.get<ProductCategory[]>(this.productCategoriesUrl)
   .pipe(
     tap(data => console.log(`categories`, JSON.stringify(data))),
+    shareReplay(1),
     catchError(this.handleError)
   )
 
@@ -36,11 +38,11 @@ export class ProductCategoryService {
     return throwError(errorMessage);
   }
 }
-function tap(arg0: (data: any) => void): import("rxjs").OperatorFunction<ProductCategory[], unknown> {
-  throw new Error('Function not implemented.');
-}
+// function tap(arg0: (data: any) => void): import("rxjs").OperatorFunction<ProductCategory[], unknown> {
+//   throw new Error('Function not implemented.');
+// }
 
-function catchError(handleError: (err: any) => Observable<never>): import("rxjs").OperatorFunction<unknown, unknown> {
-  throw new Error('Function not implemented.');
-}
+// function catchError(handleError: (err: any) => Observable<never>): import("rxjs").OperatorFunction<unknown, unknown> {
+//   throw new Error('Function not implemented.');
+// }
 

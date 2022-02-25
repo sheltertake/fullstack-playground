@@ -1,6 +1,14 @@
 <div class="hangman">
-    <app-hangman-display [guesses]="guesses" [question]="question"></app-hangman-display>
-    <app-hangman-question></app-hangman-question>
-    <app-hangman-keyboard></app-hangman-keyboard>
-</div>
-<button (click)="dummyClick()">Click me!</button>
+    <app-hangman-display (gameFinished)="onGameFinished()" [guesses]="guesses" [question]="question"></app-hangman-display>
+    <ng-container *ngIf="!restartGameBtnShown else restartGameBtn">
+      <app-hangman-question [guesses]="guesses" [question]="question"></app-hangman-question>
+      <app-hangman-keyboard (keyPressed)="guess($event)" [question]="question"></app-hangman-keyboard>
+    </ng-container>
+  </div>
+  <ng-template #restartGameBtn>
+    <button class="btn" (click)="reset()">
+      {{'>>Restart Game\<\<'}}
+    </button>
+  </ng-template>
+  
+  

@@ -1,21 +1,25 @@
-import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-hangman-question',
   templateUrl: './hangman-question.component.html',
-  styleUrls: ['./hangman-question.component.scss']
+  styleUrls: ['./hangman-question.component.scss'],
 })
 export class HangmanQuestionComponent implements OnInit, OnChanges {
-@Input() question: string = '';
-@Input() guesses: string[] = [];
- prova:boolean = true;
-characters: {value: string, guessed: boolean}[] = [];
-  constructor() { }
+  @Input() question: string = '';
+  @Input() guesses: string[] = [];
+  characters: { value: string; guessed: boolean }[] = [];
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-  
-  ngOnChanges(changes: SimpleChanges):  void{
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
     if (
       changes?.['question']?.currentValue &&
       changes?.['question'].currentValue !== changes?.['question'].previousValue
@@ -39,5 +43,4 @@ characters: {value: string, guessed: boolean}[] = [];
       });
     }
   }
-  }
-
+}
