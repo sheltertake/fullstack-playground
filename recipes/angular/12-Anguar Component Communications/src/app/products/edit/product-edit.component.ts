@@ -10,8 +10,8 @@ import { ProductService } from '../product.service';
     styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent implements OnInit {
-    @ViewChild(NgForm) editForm: NgForm;
-    pageTitle: string = 'Product Edit';
+    @ViewChild(NgForm, { static: true }) editForm: NgForm;
+    pageTitle = 'Product Edit';
     errorMessage: string;
     private originalProduct: IProduct;
     product: IProduct;
@@ -36,10 +36,10 @@ export class ProductEditComponent implements OnInit {
 
     getProduct(id: number): void {
         this.productService.getProduct(id)
-            .subscribe(
-                product => this.onProductRetrieved(product),
-                error => this.errorMessage = <any>error
-            );
+            .subscribe({
+                next: product => this.onProductRetrieved(product),
+                error: err => this.errorMessage = err
+            });
     }
 
     onProductRetrieved(product: IProduct): void {
@@ -67,10 +67,10 @@ export class ProductEditComponent implements OnInit {
         if (this.product.id) {
             if (confirm(`Really delete the product: ${this.product.productName}?`)) {
                 this.productService.deleteProduct(this.product.id)
-                    .subscribe(
-                        () => this.onSaveComplete(),
-                        (error: any) => this.errorMessage = <any>error
-                    );
+                    .subscribe({
+                        next: () => this.onSaveComplete(),
+                        error: err => this.errorMessage = err
+                    });
             }
         } else {
             // Don't delete, it was never saved.
@@ -81,15 +81,16 @@ export class ProductEditComponent implements OnInit {
     saveProduct(): void {
         if (this.editForm.valid) {
             this.productService.saveProduct(this.product)
-                .subscribe(() => {
-                    // Assign the changes from the copy
-                    Object.keys(this.product).forEach(key =>
-                        this.originalProduct[key] = this.product[key]
-                    );
-                    this.onSaveComplete();
-                },
-                (error: any) => this.errorMessage = <any>error
-                );
+                .subscribe({
+                    next: () => {
+                        // Assign the changes from the copy
+                        Object.keys(this.product).forEach(key =>
+                            this.originalProduct[key] = this.product[key]
+                        );
+                        this.onSaveComplete();
+                    },
+                    error: err => this.errorMessage = err
+                });
         } else {
             this.errorMessage = 'Please correct the validation errors.';
         }
@@ -98,6 +99,7 @@ export class ProductEditComponent implements OnInit {
     onSaveComplete(): void {
         // Reset back to pristine
         this.editForm.reset(this.editForm.value);
+
         // Navigate back to the product list
         this.router.navigate(['/products']);
     }

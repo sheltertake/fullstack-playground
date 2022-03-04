@@ -7,18 +7,22 @@ import { ProductListComponent } from './product-list.component';
 import { ProductDetailComponent } from './product-detail.component';
 import { ProductEditComponent } from './edit/product-edit.component';
 
-import { ProductService } from './product.service';
 import { ProductEditGuard } from './edit/product-edit-guard.service';
+import { ProductShellDetailComponent } from './product-shell/product-shell-detail.component';
+import { ProductShellListComponent } from './product-shell/product-shell-list.component';
+import { ProductShellComponent } from './product-shell/product-shell.component';
 
 @NgModule({
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: '', component: ProductListComponent },
+      { path: '', component: ProductShellComponent },
+      // To execute the original user interface
+      // { path: '', component: ProductListComponent },
       { path: ':id', component: ProductDetailComponent },
       {
         path: ':id/edit',
-        canDeactivate: [ ProductEditGuard ],
+        canDeactivate: [ProductEditGuard],
         component: ProductEditComponent
       }
     ])
@@ -26,11 +30,10 @@ import { ProductEditGuard } from './edit/product-edit-guard.service';
   declarations: [
     ProductListComponent,
     ProductDetailComponent,
-    ProductEditComponent
-  ],
-  providers: [
-    ProductService,
-    ProductEditGuard
+    ProductEditComponent,
+    ProductShellComponent,
+    ProductShellListComponent,
+    ProductShellDetailComponent
   ]
 })
 export class ProductModule { }

@@ -9,7 +9,7 @@ import { ProductService } from './product.service';
     styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-    pageTitle: string = 'Product Detail';
+    pageTitle = 'Product Detail';
     product: IProduct;
     errorMessage: string;
 
@@ -27,10 +27,10 @@ export class ProductDetailComponent implements OnInit {
     }
 
     getProduct(id: number) {
-        this.productService.getProduct(id).subscribe(
-          product => this.product = product,
-          error => this.errorMessage = <any>error
-        );
+        this.productService.getProduct(id).subscribe({
+            next: product => this.product = product,
+          error: err => this.errorMessage = err
+        });
     }
 
     onBack(): void {
