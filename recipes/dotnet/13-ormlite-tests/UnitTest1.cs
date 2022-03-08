@@ -8,10 +8,6 @@ namespace OrmliteTests;
 public class Tests
 {
     private string cs = @"Server=127.0.0.1;Initial Catalog=friends;Persist Security Info=True;User ID=SA;Password=yourStrong1234!Password;MultipleActiveResultSets=True;";
-    [SetUp]
-    public void Setup()
-    {
-    }
 
     [Test]
     public void SelectFriendsTest()
@@ -21,11 +17,7 @@ public class Tests
                            SqlServerDialect.Provider);
      
 
-        using (var db = dbFactory.Open())
-        {
-            var friends = db.Select<Friend>();
-            Assert.IsTrue(friends.Any());
-        }            
+                
         using var db = dbFactory.Open();
       // var inserted = db.Insert(new Friend { Name = "Lorenzo", Id = 55,  });
        
@@ -57,9 +49,10 @@ public class Tests
                            cs,
                            SqlServerDialect.Provider);
 
-
         using var db = dbFactory.Open();
-       var updated=  db.UpdateOnly(() => new Friend { Name = "Primo",Id = 1 },
+
+        var inserted = db.Insert(new Friend { Name = "Lorenzo", Id = 1 });
+        var updated=  db.UpdateOnly(() => new Friend { Name = "Primo" },
              where: x => x.Id == 1);
         var primo = db.Select<Friend>(x => x.Name == "Primo");
 
@@ -91,7 +84,7 @@ public class Tests
 public class Friend
 {
  
-    public string Name { get; set; }
+
     [PrimaryKey]
     [AutoIncrement]
     [Alias("id")]
