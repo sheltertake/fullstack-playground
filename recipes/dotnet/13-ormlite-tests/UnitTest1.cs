@@ -20,16 +20,17 @@ public class Tests
                            cs,
                            SqlServerDialect.Provider);
 
-        using var db = dbFactory.Open();
-        var friends = db.Select<Friend>();
-
-        Assert.IsTrue(friends.Any());
+        using (var db = dbFactory.Open())
+        {
+            var friends = db.Select<Friend>();
+            Assert.IsTrue(friends.Any());
+        }            
     }
 }
 
 [Alias("friends")]
 public class Friend
 {
-    public string Name { get; set; }
     public int Id { get; set; }
+    public string Name { get; set; }
 }

@@ -7,13 +7,9 @@ namespace EFCoreTests;
 public class EFCoreCrudTests
 {
     private string cs = @"Server=127.0.0.1;Initial Catalog=friends;Persist Security Info=True;User ID=SA;Password=yourStrong1234!Password;MultipleActiveResultSets=True;";
-    [SetUp]
-    public void Setup()
-    {
-    }
 
     [Test]
-    public void Test1()
+    public void SelectFriendsShouldReturnSomeRecord()
     {
         var contextOptions = new DbContextOptionsBuilder<FriendContext>()
             .UseSqlServer(cs)
