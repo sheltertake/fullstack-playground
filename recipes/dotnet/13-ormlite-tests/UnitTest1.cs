@@ -14,23 +14,87 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public void SelectFriendsTest()
     {
         var dbFactory = new OrmLiteConnectionFactory(
                            cs,
                            SqlServerDialect.Provider);
+     
 
         using (var db = dbFactory.Open())
         {
             var friends = db.Select<Friend>();
             Assert.IsTrue(friends.Any());
         }            
+        using var db = dbFactory.Open();
+      // var inserted = db.Insert(new Friend { Name = "Lorenzo", Id = 55,  });
+       
+        var friends = db.Select<Friend>();
+  
+        Assert.IsTrue(friends.Any());
+    }
+
+    [Test]
+    public void InsertNewFriend()
+    {
+        var dbFactory = new OrmLiteConnectionFactory(
+                           cs,
+                           SqlServerDialect.Provider);
+
+        using var db = dbFactory.Open();
+        var inserted = db.Insert(new Friend { Name = "Lorenzo"  });
+        var friends = db.Select<Friend>();
+
+        Assert.IsTrue(inserted==1);
+
+        var deleted = db.Delete<Friend>(x => x.Name == "Lorenzo");
+    }
+
+    [Test]
+    public void UpdateFirstFriend()
+    {
+        var dbFactory = new OrmLiteConnectionFactory(
+                           cs,
+                           SqlServerDialect.Provider);
+
+
+        using var db = dbFactory.Open();
+       var updated=  db.UpdateOnly(() => new Friend { Name = "Primo",Id = 1 },
+             where: x => x.Id == 1);
+        var primo = db.Select<Friend>(x => x.Name == "Primo");
+
+        Assert.IsTrue(primo.Any());
+        
+        
+    }
+
+    [Test]
+    public void DeleteFriend()
+    {
+        var dbFactory = new OrmLiteConnectionFactory(
+                           cs,
+                           SqlServerDialect.Provider);
+
+
+        using var db = dbFactory.Open();
+        var inserted = db.Insert(new Friend { Name = "Eliminato" });
+        var deleted = db.Delete<Friend>(x => x.Name == "Eliminato" );
+        var primo = db.Select<Friend>(x => x.Name == "Eliminato");
+
+        Assert.IsTrue(!primo.Any());
+
+
     }
 }
 
 [Alias("friends")]
 public class Friend
 {
+ 
+    public string Name { get; set; }
+    [PrimaryKey]
+    [AutoIncrement]
+    [Alias("id")]
     public int Id { get; set; }
     public string Name { get; set; }
 }
