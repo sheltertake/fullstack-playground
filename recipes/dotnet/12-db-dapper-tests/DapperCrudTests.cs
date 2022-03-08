@@ -19,6 +19,7 @@ public class DapperCrudTests
             con.Open();
             var ret = con.Execute("INSERT INTO friends(Name) VALUES( @name )", new
             {
+                name="Lorenzo"
             });
             List<Friend> friends = con.Query<Friend>("SELECT * FROM friends").ToList();
             Assert.IsTrue(friends.Any());

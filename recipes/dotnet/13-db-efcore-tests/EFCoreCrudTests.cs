@@ -8,10 +8,7 @@ public class EFCoreCrudTests
 {
     private string cs = @"Server=127.0.0.1;Initial Catalog=friends;Persist Security Info=True;User ID=SA;Password=yourStrong1234!Password;MultipleActiveResultSets=True;";
 
-    [Test]
-    public void SelectFriendsShouldReturnSomeRecord()
-    [SetUp]
-
+ 
     [Test]
     public void IsAnyFriendTest()
     {
@@ -37,12 +34,12 @@ public class EFCoreCrudTests
 
 
         var context = new FriendContext(contextOptions);
-        var newFriend = new Friend { Name = "Lorenz" };
+        var newFriend = new Friend { Name = "Loren" };
         context.Friends.Add(newFriend);
         context.SaveChanges();
-        var lorenzo = context.Friends.Single(b => b.Name == "Lorenz");
+        var lorenzo = context.Friends.Single(b => b.Name == "Loren");
 
-        Assert.IsTrue(lorenzo.Name == "Lorenz");
+        Assert.IsTrue(lorenzo.Name == "Loren");
 
 
     }
