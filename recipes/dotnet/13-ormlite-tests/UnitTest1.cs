@@ -51,9 +51,9 @@ public class Tests
 
         using var db = dbFactory.Open();
 
-        var inserted = db.Insert(new Friend { Name = "Lorenzo", Id = 1 });
+        var inserted = db.Insert(new Friend { Name = "Modificare" });
         var updated=  db.UpdateOnly(() => new Friend { Name = "Primo" },
-             where: x => x.Id == 1);
+             where: x => x.Name == "Modificare");
         var primo = db.Select<Friend>(x => x.Name == "Primo");
 
         Assert.IsTrue(primo.Any());

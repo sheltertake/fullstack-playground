@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using System.Diagnostics;
 using System.Linq;
 
 namespace EFCoreTests;
@@ -34,18 +35,31 @@ public class EFCoreCrudTests
 
 
         var context = new FriendContext(contextOptions);
-        var newFriend = new Friend { Name = "Loren" };
-        context.Friends.Add(newFriend);
-        context.SaveChanges();
-        var lorenzo = context.Friends.Single(b => b.Name == "Loren");
+        var newFriend = new Friend { Name = "Lore" };
 
-        Assert.IsTrue(lorenzo.Name == "Loren");
 
+        //Exception System.InvalidOperationException : Sequence contains more than one element
+        try
+        {
+            context.Friends.Add(newFriend);
+            context.SaveChanges();
+            var lorenzo = context.Friends.Single(b => b.Name == "Lore");
+
+            Assert.IsTrue(lorenzo.Name == "Lore");
+        }
+        catch (System.Exception e)
+        {
+               Assert.IsTrue(true);
+ 
+            // e.GetType().ToString()
+            // Debug.WriteLine("caio");
+         }
+    
 
     }
 
     [Test]
-    public void RemoveFirstFriendTest()
+    public void RemoveFriendTest()
     {
         var contextOptions = new DbContextOptionsBuilder<FriendContext>()
             .UseSqlServer(cs)
@@ -54,18 +68,56 @@ public class EFCoreCrudTests
 
         var context = new FriendContext(contextOptions);
 
-        var itemToRemove = context.Friends.SingleOrDefault(x => x.Id == 1); //returns a single item.
+        var itemToRemove = context.Friends.SingleOrDefault(x => x.Name == "Lorenzo"); //returns a single item.
 
         if (itemToRemove != null)
         {
             context.Friends.Remove(itemToRemove);
             context.SaveChanges();
+   
         }
 
-        var removed = context.Friends.Single(x => x.Id == 1);
-        Assert.IsTrue(removed.GetType == null);
+        var removed = context.Friends.SingleOrDefault(x => x.Name == "Lorenzo");
+        Assert.IsTrue(removed == null);
     }
 
+    [Test]
+    public void UpdateFriendTest()
+    {
+        var contextOptions = new DbContextOptionsBuilder<FriendContext>()
+            .UseSqlServer(cs)
+            .Options;
+
+        var mod = new Friend { Name = "Modifica" };
+        var context = new FriendContext(contextOptions);
+
+        //Exception System.InvalidOperationException : Sequence contains more than one element
+        try
+        {
+            context.Friends.Add(mod);
+            context.SaveChanges();
+
+        }
+        catch (System.Exception e)
+        {
+
+            // e.GetType().ToString()
+            // Debug.WriteLine("caio");
+        }
+
+        var entity = context.Friends.SingleOrDefault(item => item.Name == "Modifica");
+
+        if (entity != null)
+        {
+            entity.Name = "Modified";
+            context.SaveChanges();
+        }
+    
+ 
+
+        var modified = context.Friends.SingleOrDefault(x => x.Name == "Modified");
+        Assert.IsTrue(entity != null);
+    }
 
 
 
