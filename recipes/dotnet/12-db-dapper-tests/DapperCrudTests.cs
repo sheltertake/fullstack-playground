@@ -19,7 +19,7 @@ public class DapperCrudTests
             con.Open();
             var ret = con.Execute("INSERT INTO friends(Name) VALUES( @name )", new
             {
-                name="Lorenzo"
+                name = "Lorenzo"
             });
             List<Friend> friends = con.Query<Friend>("SELECT * FROM friends").ToList();
             Assert.IsTrue(friends.Any());
@@ -27,7 +27,7 @@ public class DapperCrudTests
     }
 
 
-      //InsertWithDapperAssertRecordInserted
+    //InsertWithDapperAssertRecordInserted
     [Test]
     public void InsertNewFriend()
     {
@@ -58,12 +58,11 @@ public class DapperCrudTests
             {
                 name = "Lorenzo"
             });
-            var updates = con.
-                Execute("UPDATE friends SET name = 'Luca' WHERE Id = 1");
+            var updates = con.Execute("UPDATE friends SET name = 'Luca' WHERE Id = 1");
 
             List<Friend> friends = con.Query<Friend>("SELECT * FROM friends WHERE name = 'Luca'").ToList();
             Assert.IsTrue(friends.Any());
-            
+
             con.Execute("TRUNCATE TABLE friends");
         }
     }
@@ -89,7 +88,7 @@ public class DapperCrudTests
             });
 
             var deleted = con.Execute("DELETE FROM friends WHERE name = 'Lorenzo'");
-            
+
             List<Friend> friends = con.Query<Friend>("SELECT * FROM friends WHERE name = 'Lorenzo'").ToList();
             Assert.IsTrue(!friends.Any());
 
