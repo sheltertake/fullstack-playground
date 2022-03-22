@@ -1,0 +1,67 @@
+
+
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width:250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  padding-top:50px;
+}
+.spacer {
+height: 70px;;
+}
+
+.prod{
+  background-color: #54F6D1;
+}
+
+.dashboard{
+  background-color: #5371F7;
+}
+
+.gold{
+  background-color: #F8F566;
+}
+
+.staging{
+  background-color: #F55E3F;
+}
+
+.develop{
+  background-color: #675CC8;
+}
+
+.full{
+  background-color: #D8D8D8;
+}
+
+.error{
+  background-color: #F75258;
+}
+
+
+.menu-item{
+  height: 70px;
+  width: 100%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 2px solid black;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+
+}
+
+.menu-item:last-of-type{
+  border-bottom: 2px solid black;
+}
+

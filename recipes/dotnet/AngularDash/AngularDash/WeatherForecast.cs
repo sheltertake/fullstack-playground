@@ -1,4 +1,4 @@
-namespace APITest
+namespace AngularDash
 {
     public class WeatherForecast
     {
