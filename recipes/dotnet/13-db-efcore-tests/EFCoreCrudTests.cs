@@ -9,7 +9,7 @@ public class EFCoreCrudTests
 {
     private string cs = @"Server=127.0.0.1;Initial Catalog=friends;Persist Security Info=True;User ID=SA;Password=yourStrong1234!Password;MultipleActiveResultSets=True;";
 
- 
+
     [Test]
     public void IsAnyFriendTest()
     {
@@ -39,23 +39,12 @@ public class EFCoreCrudTests
 
 
         //Exception System.InvalidOperationException : Sequence contains more than one element
-        try
-        {
-            context.Friends.Add(newFriend);
-            context.SaveChanges();
-            var lorenzo = context.Friends.Single(b => b.Name == "Lore");
 
-            Assert.IsTrue(lorenzo.Name == "Lore");
-        }
-        catch (System.Exception e)
-        {
-               Assert.IsTrue(true);
- 
-            // e.GetType().ToString()
-            // Debug.WriteLine("caio");
-         }
-    
-
+        context.Friends.Add(newFriend);
+        context.SaveChanges();
+        var lorenzo = context.Friends.FirstOrDefault(b => b.Name == "Lore");
+        
+        Assert.IsTrue(lorenzo?.Name == "Lore");
     }
 
     [Test]
@@ -74,7 +63,6 @@ public class EFCoreCrudTests
         {
             context.Friends.Remove(itemToRemove);
             context.SaveChanges();
-   
         }
 
         var removed = context.Friends.SingleOrDefault(x => x.Name == "Lorenzo");
@@ -112,8 +100,8 @@ public class EFCoreCrudTests
             entity.Name = "Modified";
             context.SaveChanges();
         }
-    
- 
+
+
 
         var modified = context.Friends.SingleOrDefault(x => x.Name == "Modified");
         Assert.IsTrue(entity != null);
