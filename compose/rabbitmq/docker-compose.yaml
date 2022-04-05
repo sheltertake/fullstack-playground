@@ -1,0 +1,17 @@
+version: "3.9"
+
+networks:
+  net:
+
+services:
+  spm-rabbit:
+    image: rabbitmq:3-management
+    container_name: spm-rabbit
+    ports:
+    - 5672:5672 
+    - 15672:15672
+    networks:
+    - net
+    environment:
+    - RABBITMQ_DEFAULT_USER=user
+    - RABBITMQ_DEFAULT_PASS=PassW0rd12
